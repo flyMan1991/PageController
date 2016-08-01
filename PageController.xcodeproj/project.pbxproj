@@ -30,8 +30,8 @@
 		04D646891D48845800A0977D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04D6468F1D48856700A0977D /* ContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentViewController.h; sourceTree = "<group>"; };
 		04D646901D48856700A0977D /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
-		04D646941D4AEC2D00A0977D /* PageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageController.h; sourceTree = "<group>"; };
-		04D646951D4AEC2D00A0977D /* PageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageController.m; sourceTree = "<group>"; };
+		04D646941D4AEC2D00A0977D /* PageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PageController.h; path = ../PageController.h; sourceTree = "<group>"; };
+		04D646951D4AEC2D00A0977D /* PageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PageController.m; path = ../PageController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +45,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04A86E921D4EDD080000ADBB /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				04D646941D4AEC2D00A0977D /* PageController.h */,
+				04D646951D4AEC2D00A0977D /* PageController.m */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
 		04D6466C1D48845800A0977D = {
 			isa = PBXGroup;
 			children = (
@@ -64,14 +73,13 @@
 		04D646771D48845800A0977D /* PageController */ = {
 			isa = PBXGroup;
 			children = (
+				04A86E921D4EDD080000ADBB /* Class */,
 				04D6467B1D48845800A0977D /* AppDelegate.h */,
 				04D6467C1D48845800A0977D /* AppDelegate.m */,
 				04D6467E1D48845800A0977D /* ViewController.h */,
 				04D6467F1D48845800A0977D /* ViewController.m */,
 				04D6468F1D48856700A0977D /* ContentViewController.h */,
 				04D646901D48856700A0977D /* ContentViewController.m */,
-				04D646941D4AEC2D00A0977D /* PageController.h */,
-				04D646951D4AEC2D00A0977D /* PageController.m */,
 				04D646811D48845800A0977D /* Main.storyboard */,
 				04D646841D48845800A0977D /* Assets.xcassets */,
 				04D646861D48845800A0977D /* LaunchScreen.storyboard */,
@@ -315,6 +323,7 @@
 				04D6468E1D48845800A0977D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

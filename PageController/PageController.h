@@ -7,10 +7,32 @@
 //
 
 #import <UIKit/UIKit.h>
+@class PageController;
+#pragma mark -Delegate functions
+
+@protocol PageControllerDelegate <NSObject>
+
+@optional
+- (void)willMoveToPage:(UIViewController *)controller index:(NSInteger)index;
+- (void)didMoveToPage:(UIViewController *)controller index:(NSInteger)index;
+@end
+
+@interface MenuItemVie : UIView
+
+
+@property (nonatomic,strong)UILabel * titleLabel;
+@property (nonatomic,strong)UIView * menuItemSeparator;
+- (void)setUpMenuItemView:(CGFloat)menuItemWidth menuScrollViewHeight:(CGFloat)menuScrollViewHeight indicatorHeight:(CGFloat)indicatorHeight separatorPercentageHeight:(CGFloat)separatorPercentageHeight separatorWidth:(CGFloat)separatorWidth separatorRoundEdges:(BOOL)separatorRoundEdges menuItemSeparatorColor:(UIColor *)menuItemSeparatorColor;
+
+- (void)setTitleText:(NSString *)text;
+
+@end
+
+
+
 
 @interface PageController : UIViewController
-@property (nonatomic,copy)NSArray * controllerArray;
-@property (nonatomic, copy) NSArray *menuItems;
+
 @property (nonatomic) NSInteger currentPageIndex;
 @property (nonatomic) CGFloat menuHeight;
 @property (nonatomic) CGFloat menuItemWidth;
@@ -20,7 +42,7 @@
 @property (nonatomic) BOOL addBottomMenuHairline;
 @property (nonatomic) BOOL menuItemWidthBasedOnTitleTextWidth;
 @property (nonatomic) BOOL useMenuLikeSegmentedControl;
-
+@property (nonatomic,copy)id<PageControllerDelegate> delegate;
 @property (nonatomic,strong)UIColor * menuHariLineColor; // 下划线颜色
 @property (nonatomic,strong)UIColor * menuItemSelectTextColor;  // 每个题目选中文字的颜色
 @property (nonatomic,strong)UIColor * menuItemNormalTextColor;  // 每个题目正常文字的颜色
@@ -32,8 +54,11 @@
                    controllers:(NSArray<UIViewController *> *)controllers
                          frame:(CGRect)frame
                        options:(NSDictionary<NSString *,id> *)options;
-- (void)addPageAtIndex:(NSInteger)index;
-- (void)moveToPage:(NSInteger)index;
+#pragma mark    delete and insert
+- (void)deletePageAtIndex:(NSInteger)index;
+- (void)insertPageAtIndex:(NSInteger)index
+                   VCType:(UIViewController *)type
+                    title:(NSString *)title;
 extern NSString * const PageMenuOptionSelectionIndicatorHeight;
 extern NSString * const PageMenuOptionMenuItemSeparatorWidth;
 extern NSString * const PageMenuOptionScrollMenuBackgroundColor;

@@ -7,11 +7,13 @@
 //
 
 #import "PageController.h"
-
+#import <objc/runtime.h>
 @interface PageController ()<UIScrollViewDelegate,UIGestureRecognizerDelegate>
 @property (nonatomic) NSMutableArray *mutableMenuItems;
-@property (nonatomic,strong) UIScrollView * menuItemScrollView;
-@property (nonatomic,strong) UIScrollView * contentScrollView;
+@property (nonatomic,strong) UIScrollView   * menuItemScrollView;
+@property (nonatomic,strong) UIScrollView   * contentScrollView;
+@property (nonatomic,strong) NSMutableArray * controllerArray;
+@property (nonatomic,strong) NSMutableArray * menuItems;
 @end
 
 @implementation PageController
@@ -44,15 +46,9 @@ NSString * const PageMenuOptionHideTopMenuBar                       = @"hideTopM
         return  nil;
     }
     [self initValues];
-    _controllerArray = controllers;
-    _menuItems = titles;
+    [_controllerArray addObjectsFromArray:controllers];
+    [_menuItems addObjectsFromArray:titles];
     self.view.frame = frame;
-    [self configcontentScrollView];
-    [self configmenuItemScrollView];
-    if (_menuItemScrollView.subviews.count == 0) {
-        [self configureUserInterface];
-
-    }
     return self;
 }
 - (void)initValues {
@@ -60,13 +56,16 @@ NSString * const PageMenuOptionHideTopMenuBar                       = @"hideTopM
     _menuHeight = 40.0;
     _menuItemWidth = 111.0;
     _menuMargin = 20;
+    _currentPageIndex = 0;
     _menuItemFont = [UIFont systemFontOfSize:15];
     _menuHariLineColor = [UIColor whiteColor];
-    _menuItemSelectTextColor = [UIColor whiteColor];
+    _menuItemSelectTextColor = [UIColor purpleColor];
     _menuItemNormalTextColor = [UIColor blackColor];
     _menuItemSelectBackColor = [UIColor whiteColor];
     _menuItemNormalBackColor = [UIColor whiteColor];
     _addBottomMenuHairline = YES;
+    _controllerArray = [NSMutableArray array];
+    _menuItems = [NSMutableArray array];
 }
 /**
  *  加入视图控制器
@@ -75,11 +74,10 @@ NSString * const PageMenuOptionHideTopMenuBar                       = @"hideTopM
  3、加入superView               VC会调用viewWillApper、viewDidApper方法
  */
 - (void)addContentVC {
+    _contentScrollView.contentSize = CGSizeMake(self.view.frame.size.width * (CGFloat)_controllerArray.count, self.view.frame.size.height - _menuHeight);
     for (int i = 0; i < _controllerArray.count; i ++) {
-        UIViewController  * VC = _controllerArray[i];
-        [self addChildViewController:VC];
-        //默认加载第一页
-        if (i == 0) {
+//        //默认加载第一页
+        if (i == _currentPageIndex) {
             [self loadScrollViewWithPage:i];
         }
     }
@@ -91,19 +89,21 @@ NSString * const PageMenuOptionHideTopMenuBar                       = @"hideTopM
     _contentScrollView.frame = CGRectMake(0, _menuHeight, self.view.frame.size.width, self.view.frame.size.height - _menuHeight);
     _contentScrollView.showsHorizontalScrollIndicator = NO;
     _contentScrollView.showsVerticalScrollIndicator = NO;
-    _contentScrollView.contentSize = CGSizeMake(self.view.frame.size.width * (CGFloat)_controllerArray.count, self.view.frame.size.height - _menuHeight);
+    _contentScrollView.delegate = self;
+    _contentScrollView.scrollsToTop = NO;
     [self.view addSubview:_contentScrollView];
     [self addContentVC];
 }
 - (void)configmenuItemScrollView {
-
     _menuItemScrollView = [[UIScrollView alloc] init];
     _menuItemScrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, _menuHeight);
-    _menuItemScrollView.backgroundColor = [UIColor purpleColor];
-    [self.view addSubview:_menuItemScrollView];
-    // disable scroll bars
+//    _menuItemScrollView.backgroundColor = [UIColor purpleColor];
     _menuItemScrollView.showsVerticalScrollIndicator = NO;
     _menuItemScrollView.showsHorizontalScrollIndicator = NO;
+    _menuItemScrollView.userInteractionEnabled = YES;
+    _menuItemScrollView.scrollsToTop = NO;
+    [self.view addSubview:_menuItemScrollView];
+    // disable scroll bars
 }
 // MARK:布局UI
 - (void)configureUserInterface {
@@ -111,21 +111,21 @@ NSString * const PageMenuOptionHideTopMenuBar                       = @"hideTopM
     CGFloat itemWidth = [self getMaxLength:_menuItems];
     _menuItemWidth = itemWidth;
     // 不能回滚到顶部
-    _menuItemScrollView.scrollsToTop = NO;
-    _contentScrollView.scrollsToTop = NO;
     CGFloat menuScrollviewWidth = (_menuItemWidth + _menuMargin) * (CGFloat)_controllerArray.count + _menuMargin;
     if (menuScrollviewWidth <= self.view.frame.size.width) {
-        _menuItemScrollView.scrollEnabled = NO;
+        _menuItemScrollView.scrollEnabled = YES;
         _menuItemWidth = (self.view.frame.size.width - _menuMargin*(_controllerArray.count + 1))/_controllerArray.count;
         _menuItemScrollView.contentSize = CGSizeMake(self.view.frame.size.width, _menuHeight);
     }else{
         _menuItemScrollView.contentSize = CGSizeMake(menuScrollviewWidth, _menuHeight);
     }
-    _contentScrollView.delegate = self;
-    _menuItemScrollView.userInteractionEnabled = YES;
     [self setUpMenuScrollviewSubview];
 }
 - (void)setUpMenuScrollviewSubview {
+    // 移除menuItemScrollView所有子视图
+    for (UIView * titleView in _menuItemScrollView.subviews) {
+        [titleView removeFromSuperview];
+    }
     for (int i = 0; i < _menuItems.count; i ++) {
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(_menuMargin * (i + 1) + _menuItemWidth * i, 0, _menuItemWidth, _menuHeight);
@@ -134,24 +134,26 @@ NSString * const PageMenuOptionHideTopMenuBar                       = @"hideTopM
         [button.titleLabel setFont:_menuItemFont];
         button.userInteractionEnabled = YES;
         [_menuItemScrollView addSubview:button];
-        
+
         [button addTarget:self action:@selector(headScrollViewButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        
         //默认当前为第一个频道
-        if (i == 0) {
+        if (i == _currentPageIndex) {
 //            button.backgroundColor = _menuItemSelectBackColor;
             [button setTitleColor:_menuItemSelectTextColor forState:UIControlStateNormal];
         }else{
 //            button.backgroundColor = _menuItemNormalBackColor;
             [button setTitleColor:_menuItemNormalTextColor forState:UIControlStateNormal];
         }
-        
     }
+}
+- (void)refreshMenuScrollviewSubview {
+    [self configureUserInterface];
 }
 //改变频道按钮的坐标
 - (void)scrollHeadScrollView {
     
-    CGFloat x = _currentPageIndex * _menuItemWidth + _menuItemWidth * 0.5 - self.view.frame.size.width * 0.5;
+    CGFloat x = (_currentPageIndex - 2) * (_menuItemWidth + _menuMargin) ;
+    
     if (x >= 0) {
         if (x >= self.menuItemScrollView.contentSize.width - self.view.frame.size.width) {
             x = self.menuItemScrollView.contentSize.width - self.view.frame.size.width;
@@ -162,12 +164,11 @@ NSString * const PageMenuOptionHideTopMenuBar                       = @"hideTopM
         [self.menuItemScrollView setContentOffset:CGPointMake(0, 0) animated:YES];  //向左滚动到尽头
 
 }
-
 //点击频道按钮切换
 - (void)headScrollViewButtonAction:(UIButton *)button {
     NSInteger currentPage = button.tag - 1000;
+    [self.contentScrollView setContentOffset:CGPointMake(self.view.frame.size.width * currentPage, 0) animated:NO];
     [self loadScrollViewWithPage:(int)currentPage];
-    [self.contentScrollView setContentOffset:CGPointMake(self.view.frame.size.width * currentPage, _menuHeight) animated:NO];
 }
 - (CGRect)getRect:(int)currentPage {
     CGRect rect = CGRectMake(self.view.frame.size.width * currentPage, 0, self.view.frame.size.width,self.view.frame.size.height -  _menuHeight);
@@ -182,28 +183,39 @@ NSString * const PageMenuOptionHideTopMenuBar                       = @"hideTopM
         UIButton * menuBtn = (UIButton *)[_menuItemScrollView viewWithTag:1000 + i];
         //默认当前为第一个频道
         if (i == _currentPageIndex) {
-            //            menuBtn.backgroundColor = _menuItemSelectBackColor;
             [menuBtn setTitleColor:_menuItemSelectTextColor forState:UIControlStateNormal];
         }else{
-            //            menuBtn.backgroundColor = _menuItemNormalBackColor;
             [menuBtn setTitleColor:_menuItemNormalTextColor forState:UIControlStateNormal];
         }
     }
     //判断页面是否已经显示，如果未显示则让其显示
-    UIViewController * VC = [self.childViewControllers objectAtIndex:page];
-    if (VC.view.superview == nil) {
+    UIViewController * VC = _controllerArray[page];
+    if ([_delegate respondsToSelector:@selector(didMoveToPage:index:)]) {
+        [_delegate didMoveToPage:VC index:(NSInteger)_currentPageIndex];
+    }
+    if (![VC isViewLoaded]) {
         VC.view.frame = [self getRect:page];
+        [self addChildViewController:VC];
         [self.contentScrollView addSubview:VC.view];
-    }else {
+            }else {
         return;
     }
-    
 }
-#pragma mark UIScrollViewDelegate 
+#pragma mark UIScrollViewDelegate
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+    if (scrollView == _contentScrollView) {
+        CGFloat pageWidth = self.view.frame.size.width;
+        _currentPageIndex = floor(scrollView.contentOffset.x /pageWidth);
+        UIViewController * currentController = _controllerArray[_currentPageIndex];
+        if ([_delegate respondsToSelector:@selector(willMoveToPage:index:)]) {
+            [_delegate willMoveToPage:currentController index:(NSInteger)currentController];
+        }
+    }
+}
 //用户滑动屏幕切换频道的情景：ScrollView滚动停止的时候调用该方法
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    
     if (scrollView == _contentScrollView) {
+//        NSLog(@"+++++");
         CGFloat pageWidth = self.view.frame.size.width;
         _currentPageIndex = floor(scrollView.contentOffset.x /pageWidth);
         //加载页面
@@ -241,11 +253,49 @@ NSString * const PageMenuOptionHideTopMenuBar                       = @"hideTopM
     }
     return maxLength + 20;
 }
+// MARK: - insert and delete
+- (void)insertPageAtIndex:(NSInteger)index VCType:(UIViewController *)type title:(NSString *)title{
+    
+    [_controllerArray addObject:type];
+    [_menuItems addObject:title];
+    [type willMoveToParentViewController:self];
+    [self refreshMenuScrollviewSubview];
+    [self scrollHeadScrollView];
+    [self addContentVC];
+    [type willMoveToParentViewController:self];
+    [type didMoveToParentViewController:self];
+}
+- (void)deletePageAtIndex:(NSInteger)index {
+    if (_controllerArray.count <= 3 || _controllerArray.count < index) {
+        return;
+    }
+    _currentPageIndex = 0;
+    UIViewController * indexVC = _controllerArray[index];
+    [_controllerArray removeObjectAtIndex:index];
+    [_menuItems removeObjectAtIndex:index];
+    [indexVC.view removeFromSuperview];
+    [indexVC removeFromParentViewController];
+    [indexVC willMoveToParentViewController:nil];
+    [self refreshMenuScrollviewSubview];
+    [self scrollHeadScrollView];
+    [self addContentVC];
+    [indexVC didMoveToParentViewController:nil];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
 }
-
+#pragma mark 视图完全出现时候,加载布局子视图
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self configcontentScrollView];
+    [self configmenuItemScrollView];
+    if (_menuItemScrollView.subviews.count == 0) {
+        [self configureUserInterface];
+    }
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

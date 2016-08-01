@@ -13,12 +13,10 @@
 @end
 
 @implementation ContentViewController
-
+// 此时布局还未完成
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.view addSubview:self.contentLabel];
-    self.contentLabel.text = self.typeName;
 }
 - (UILabel *)contentLabel {
     if (!_contentLabel) {
@@ -27,6 +25,13 @@
         _contentLabel.backgroundColor = [UIColor redColor];
     }
     return _contentLabel;
+}
+- (void)viewDidLayoutSubviews  {
+    [super viewDidLayoutSubviews];
+    [self.view addSubview:self.contentLabel];
+    self.contentLabel.text = self.typeName;
+    NSLog(@"--%f",self.contentLabel.frame.size.height);
+    NSLog(@"%@",self.typeName);
 }
 
 - (void)didReceiveMemoryWarning {
