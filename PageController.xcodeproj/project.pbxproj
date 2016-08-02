@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04A86E971D502D880000ADBB /* CXPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04A86E961D502D880000ADBB /* CXPageController.m */; };
 		04D6467A1D48845800A0977D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D646791D48845800A0977D /* main.m */; };
 		04D6467D1D48845800A0977D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D6467C1D48845800A0977D /* AppDelegate.m */; };
 		04D646801D48845800A0977D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D6467F1D48845800A0977D /* ViewController.m */; };
@@ -15,9 +16,15 @@
 		04D646881D48845800A0977D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04D646861D48845800A0977D /* LaunchScreen.storyboard */; };
 		04D646911D48856700A0977D /* ContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D646901D48856700A0977D /* ContentViewController.m */; };
 		04D646961D4AEC2D00A0977D /* PageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D646951D4AEC2D00A0977D /* PageController.m */; };
+		04D9C02D1D5088BC0061AB79 /* CXMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D9C02C1D5088BC0061AB79 /* CXMenuView.m */; };
+		04D9C0301D5089BB0061AB79 /* CXProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D9C02F1D5089BB0061AB79 /* CXProgressView.m */; };
+		04D9C0331D508EB50061AB79 /* CXScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D9C0321D508EB50061AB79 /* CXScrollView.m */; };
+		04FC370A1D5084C600458A17 /* CXMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 04FC37091D5084C600458A17 /* CXMenuItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04A86E951D502D880000ADBB /* CXPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXPageController.h; sourceTree = "<group>"; };
+		04A86E961D502D880000ADBB /* CXPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXPageController.m; sourceTree = "<group>"; };
 		04D646751D48845800A0977D /* PageController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PageController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04D646791D48845800A0977D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		04D6467B1D48845800A0977D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -32,6 +39,15 @@
 		04D646901D48856700A0977D /* ContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentViewController.m; sourceTree = "<group>"; };
 		04D646941D4AEC2D00A0977D /* PageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PageController.h; path = ../PageController.h; sourceTree = "<group>"; };
 		04D646951D4AEC2D00A0977D /* PageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PageController.m; path = ../PageController.m; sourceTree = "<group>"; };
+		04D9C02B1D5088BC0061AB79 /* CXMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMenuView.h; sourceTree = "<group>"; };
+		04D9C02C1D5088BC0061AB79 /* CXMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMenuView.m; sourceTree = "<group>"; };
+		04D9C02E1D5089BB0061AB79 /* CXProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXProgressView.h; sourceTree = "<group>"; };
+		04D9C02F1D5089BB0061AB79 /* CXProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXProgressView.m; sourceTree = "<group>"; };
+		04D9C0311D508EB50061AB79 /* CXScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXScrollView.h; sourceTree = "<group>"; };
+		04D9C0321D508EB50061AB79 /* CXScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXScrollView.m; sourceTree = "<group>"; };
+		04FC37061D50831E00458A17 /* CXPageConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXPageConst.h; sourceTree = "<group>"; };
+		04FC37081D5084C600458A17 /* CXMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMenuItem.h; sourceTree = "<group>"; };
+		04FC37091D5084C600458A17 /* CXMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMenuItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +66,25 @@
 			children = (
 				04D646941D4AEC2D00A0977D /* PageController.h */,
 				04D646951D4AEC2D00A0977D /* PageController.m */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		04A86E931D502CE10000ADBB /* CXPageController */ = {
+			isa = PBXGroup;
+			children = (
+				04A86E941D502CE10000ADBB /* Class */,
+			);
+			path = CXPageController;
+			sourceTree = "<group>";
+		};
+		04A86E941D502CE10000ADBB /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				04FC37071D50841500458A17 /* CXMenuView */,
+				04A86E951D502D880000ADBB /* CXPageController.h */,
+				04A86E961D502D880000ADBB /* CXPageController.m */,
+				04FC37061D50831E00458A17 /* CXPageConst.h */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -73,6 +108,7 @@
 		04D646771D48845800A0977D /* PageController */ = {
 			isa = PBXGroup;
 			children = (
+				04A86E931D502CE10000ADBB /* CXPageController */,
 				04A86E921D4EDD080000ADBB /* Class */,
 				04D6467B1D48845800A0977D /* AppDelegate.h */,
 				04D6467C1D48845800A0977D /* AppDelegate.m */,
@@ -95,6 +131,21 @@
 				04D646791D48845800A0977D /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		04FC37071D50841500458A17 /* CXMenuView */ = {
+			isa = PBXGroup;
+			children = (
+				04FC37081D5084C600458A17 /* CXMenuItem.h */,
+				04FC37091D5084C600458A17 /* CXMenuItem.m */,
+				04D9C02B1D5088BC0061AB79 /* CXMenuView.h */,
+				04D9C02C1D5088BC0061AB79 /* CXMenuView.m */,
+				04D9C02E1D5089BB0061AB79 /* CXProgressView.h */,
+				04D9C02F1D5089BB0061AB79 /* CXProgressView.m */,
+				04D9C0311D508EB50061AB79 /* CXScrollView.h */,
+				04D9C0321D508EB50061AB79 /* CXScrollView.m */,
+			);
+			path = CXMenuView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,9 +220,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				04D646961D4AEC2D00A0977D /* PageController.m in Sources */,
+				04A86E971D502D880000ADBB /* CXPageController.m in Sources */,
+				04D9C02D1D5088BC0061AB79 /* CXMenuView.m in Sources */,
 				04D646911D48856700A0977D /* ContentViewController.m in Sources */,
 				04D646801D48845800A0977D /* ViewController.m in Sources */,
 				04D6467D1D48845800A0977D /* AppDelegate.m in Sources */,
+				04D9C0331D508EB50061AB79 /* CXScrollView.m in Sources */,
+				04FC370A1D5084C600458A17 /* CXMenuItem.m in Sources */,
+				04D9C0301D5089BB0061AB79 /* CXProgressView.m in Sources */,
 				04D6467A1D48845800A0977D /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
